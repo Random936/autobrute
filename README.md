@@ -10,5 +10,7 @@ pip3 install -r requirements.txt
 
 ## Usage
 To use autobrute, you need to specify two arguments. First, you need to specify the URL to the login page that will be brute forced. Next, specify the error message that is displayed for incorrect credentials. Here is an example of running autobrute:
-![demonstration](img/demonstration)
+
+![demonstration](img/demonstration.png)
+
 As you can see, after specifying the url with `-u` and the failure condition with `-f`, you can use `--` to incorporate hydra arguments. 
