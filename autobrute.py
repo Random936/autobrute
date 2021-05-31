@@ -117,7 +117,7 @@ else:
 print(f'[\033[32m+\033[37m] Created http-{formmethod}-form: \"{formaction}:{postfields}:F={args.failure}\"', file=sys.stderr)
 
 if args.print:
-    print(f'{formaction}:{postfields}:F={args.failure}') 
+    print(f'hydra {domain} http-{formmethod}-form \"{formaction}:{postfields[1:]}:F={args.failure}\" {hydraargs}') 
     exit(0)
 
 os.system(f'hydra {domain} http-{formmethod}-form \"{formaction}:{postfields[1:]}:F={args.failure}\" {hydraargs}')
