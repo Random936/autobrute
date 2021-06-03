@@ -5,13 +5,9 @@ import urllib.parse as urllib
 import requests
 import sys
 import os
+import re
 
 requests.packages.urllib3.disable_warnings()
-
-# Compare the innerText of previous request
-# with the redirect of the failed login request.
-# This will allow for a comparison between both sites
-# giving you the failure text of the page.
 
 def get_login_form(formelements, usertypes, passtypes):
     for form in formelements:
@@ -34,6 +30,16 @@ def get_login_form(formelements, usertypes, passtypes):
                     "user":userparam,
                     "pass":passparam
                 }
+def parse_formaction(formaction):
+    print("[\033[32m+\033[37m] Found form action: " + formaction + "\n[\033[34m*\033[37m] Making form action compatible with hydra.", file=sys.stderr)
+    if formaction[0] != '/' and not '://' in formaction:
+        urlpath = urllib.urlparse(args.url).path
+        relativepath = re.sub(r'(?<=\/)[^/]*$', '', urlpath)
+        formaction = relativepath + formaction
+    elif '://' in formaction:
+        formaction = urllib.urlparse(formaction).path
+
+    return formaction
 
 parser = argparse.ArgumentParser(description="AutoBrute automates hydra http brute forcing with ease. All you have to run is one simple command")
 parser.add_argument('--url', '-u', help="URL of the login page to be brute forced.", required=True, type=str)
@@ -105,11 +111,7 @@ else:
     formmethod = "get"
 
 if formaction:
-    print("[\033[32m+\033[37m] Found form action: " + formaction + "\n[\033[34m*\033[37m] Making form action compatible with hydra.", file=sys.stderr)
-    if formaction[0] != '/' and not '://' in formaction:
-        formaction = '/' + formaction
-    elif '://' in formaction:
-        formaction = urllib.urlparse(formaction).path
+    formaction = parse_formaction(formaction)
 else:
     print("[\033[34m*\033[37m] No form action found. Using provided path.", file=sys.stderr)
     formaction = urllib.urlparse(args.url).path
