@@ -6,6 +6,7 @@ Autobrute is a script that automates the time consuming process of forming a `ht
 To install autobrute, just run the command below.
 ```bash
 git clone https://github.com/Random936/autobrute.git
+cd autobrute
 pip3 install -r requirements.txt
 ```
 
